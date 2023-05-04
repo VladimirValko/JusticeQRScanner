@@ -69,10 +69,7 @@ export const Scanner = ({ navigation }: Props) => {
     );
   };
 
-  if (hasPermission === null) {
-    return <NoAccessToCamera />;
-  }
-  if (hasPermission === false) {
+  if (!hasPermission) {
     return <NoAccessToCamera />;
   }
 
