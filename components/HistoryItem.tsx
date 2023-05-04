@@ -10,7 +10,7 @@ import {
 import moment from "moment";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { isValidUrl } from "../helpers/urlChecker";
+import { checkIsValidUrl } from "../helpers/urlChecker";
 
 type HistoryItemProps = {
   data: string;
@@ -18,7 +18,7 @@ type HistoryItemProps = {
 };
 
 export const HistoryItem: FC<HistoryItemProps> = ({ data, date }) => {
-  const isDataAValidURL = isValidUrl(data);
+  const isDataAValidURL = checkIsValidUrl(data);
 
   const handlePress = async () => {
     try {

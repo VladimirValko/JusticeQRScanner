@@ -8,7 +8,6 @@ export type ScannedDataType = {
 
 export const storeData = async (value: ScannedDataType[]) => {
   try {
-    console.log(value, "Vvvvvvvvvvvvvvvvvvvv from storeData");
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem("userData", jsonValue);
   } catch (error) {
@@ -16,12 +15,14 @@ export const storeData = async (value: ScannedDataType[]) => {
   }
 };
 
-export const getData = async () => {
+export const getData = async ()  => {
   try {
     const jsonValue = await AsyncStorage.getItem('userData')
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
+    const value = jsonValue !== null ? JSON.parse(jsonValue) : []
+    return Array.isArray(value) ? (value as ScannedDataType[]) : []
   } catch(error) {
     console.log(error)
+    return []
   }
 }
 

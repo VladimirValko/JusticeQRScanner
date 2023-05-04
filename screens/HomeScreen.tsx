@@ -19,13 +19,11 @@ const noHistory = require("../assets/3973481.jpg");
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
-// TODO typeScript
 export const Home = ({ navigation }: Props) => {
   const [userDataFromStorage, setUserDataFromStorage] = useState<
     ScannedDataType[]
   >([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [clear, setClear] = useState(false);
 
   const getDataFromStorage = async () => {
     const userData = await getData();
@@ -34,11 +32,8 @@ export const Home = ({ navigation }: Props) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-
-    setTimeout(() => {
-      getDataFromStorage();
-      setRefreshing(false);
-    }, 1000);
+    getDataFromStorage();
+    setRefreshing(false);
   }, []);
 
   useEffect(() => {
@@ -48,13 +43,9 @@ export const Home = ({ navigation }: Props) => {
     return focusHandler;
   }, [navigation]);
 
-  useEffect(() => {
-    getDataFromStorage();
-  }, [clear]);
-
   const handleClearHistory = async () => {
     await storeData([]);
-    setClear(!clear);
+    getDataFromStorage();
   };
 
   return (
@@ -87,20 +78,20 @@ export const Home = ({ navigation }: Props) => {
         </View>
         <View style={styles.scanningHistoryItemsWrapper}>
           {userDataFromStorage
-            ?.sort((a, b) => +new Date(b.date) - +new Date(a.date))
-            ?.map((dataItem: ScannedDataType) => (
-              <View key={dataItem?.id}>
+            .sort((a, b) => +new Date(b.date) - +new Date(a.date))
+            .map((dataItem: ScannedDataType) => (
+              <View key={dataItem.id}>
                 <HistoryItem data={dataItem.data} date={dataItem.date} />
               </View>
             ))}
         </View>
-        {!!!userDataFromStorage?.length && (
+        {!userDataFromStorage.length && (
           <View style={styles.noHistoryWrapper}>
             <Image source={noHistory} style={styles.noHistoryImage} />
             <Text style={styles.noHistoryText}>No scanning history</Text>
           </View>
         )}
-        {!!userDataFromStorage?.length && (
+        {!!userDataFromStorage.length && (
           <Button
             textColor="red"
             icon="delete-clock-outline"
